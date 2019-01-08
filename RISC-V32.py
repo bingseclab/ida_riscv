@@ -380,13 +380,14 @@ class riscv_processor_t(processor_t):
 				if funct3 == 0b000: insn.itype = self.itype_subw
 				if funct3 == 0b101: insn.itype = self.itype_sraw			
 	def decode_U_type(self, insn, w):
-		imm = SIGNEXT((BITS(w, 31, 12) << 12), 32)
+		imm = BITS(w, 31, 12)
 		rd = BITS(w, 11, 7) 
 		op = BITS(w, 6, 0)
 		insn.Op1.type = o_reg
 		insn.Op2.type = o_imm
 		insn.Op1.reg = rd
 		insn.Op2.value = imm
+		insn.Op2.dtype = dt_word
 		if op == 0b0010111: insn.itype =self.itype_auipc
 		if op == 0b0110111: insn.itype = self.itype_lui
 		
@@ -427,8 +428,6 @@ class riscv_processor_t(processor_t):
 	def decode_J_type(self, insn, w):
 		op = BITS(w, 6, 0)
 		rd = BITS(w, 11, 7)
-		if (rd == 0):
-			rd = 1	 #if rd is ommitted, x1 is assumed
 		if (op == 0b1101111):
 			insn.itype = self.itype_jal
 			insn.Op1.type = o_reg
@@ -535,6 +534,11 @@ class riscv_processor_t(processor_t):
 		if op == 0b1100111: # jalr 
 
 			insn.itype = self.itype_jalr
+			if (w == 0x00008067):
+				insn.itype = self.itype_ret
+				insn.Op1.type = o_void
+				insn.Op2.type = o_void
+				insn.Op3.type = o_void
 			insn.Op2.type = o_displ
 			insn.Op2.addr = BITS(w, 31,20)
 			insn.Op2.addr = SIGNEXT(insn.Op2.addr, 12)
