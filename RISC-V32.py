@@ -64,12 +64,12 @@ class riscv_processor_t(processor_t):
 	plnames = ['RISCV32']
 
   
-  	segreg_size = 0
+	segreg_size = 0
 
 
 	# codestart = ?
 	# Array of 'return' instruction opcodes (optional)
-    	retcodes = ['\x82\x80']   # 8082: ret
+	retcodes = ['\x82\x80']   # 8082: ret
 
 
 	#instruction array...
@@ -283,7 +283,7 @@ class riscv_processor_t(processor_t):
 		## for now we just have unknown, and  unknown does not care about registers
 		if (ctx.insn.size == 2):
 			ctx.out_line("c.", COLOR_INSN)
-    		ctx.out_mnemonic()
+			ctx.out_mnemonic()
 		
 
 
@@ -292,7 +292,7 @@ class riscv_processor_t(processor_t):
 			ctx.out_one_operand(0)
 
 		# output the rest of operands separated by commas
-		for i in xrange(1, 3):
+		for i in range(1, 3):
 			if (ctx.insn[i].type == o_void):
 			        break
 			ctx.out_symbol(',')
@@ -489,7 +489,7 @@ class riscv_processor_t(processor_t):
 				insn.Op2.value = BITS(w, 27, 24)
 			elif (BITS(w, 31, 7) == 32):
 				insn.itype = self.itype_fence_i
-			 	insn.Op1.type = o_void
+				insn.Op1.type = o_void
 				insn.Op2.type = o_void
 				insn.Op3.type = o_void
 
@@ -853,7 +853,7 @@ class riscv_processor_t(processor_t):
 		]
 	#section copied from msp430.py
 		# Create the ireg_XXXX constants
-		for i in xrange(len(self.reg_names)):
+		for i in range(len(self.reg_names)):
 		    setattr(self, 'ireg_' + self.reg_names[i], i)
 
 		# Segment register information (use virtual CS and DS registers if your
